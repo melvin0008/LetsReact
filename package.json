@@ -1,7 +1,7 @@
 {
-  "name": "firstcomponent",
+  "name": "lets-react",
   "version": "1.0.0",
-  "description": "firstcomponent",
+  "description": "Lets React",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,5 +9,8 @@
   },
   "author": "melvin0008",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "http-server": "^0.8.0"
+  }
 }
