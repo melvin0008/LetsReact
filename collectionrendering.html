@@ -31,11 +31,15 @@
 
 	var RecipeList = React.createClass({
 	  render: function() {
+	  	var recipeNodes = this.props.data.map(function(recipe,index){
+	  		return (
+		  		<Recipe key={index} title={recipe.title} instructions={recipe.instructions}/>
+	  		)
+	  	})
 	    return (
 	      <div>
 	      	RecipeList component text
-	      	<Recipe title="Rajma" instructions="Cook well"/>
-	      	<Recipe title="Rice" instructions="Cook rice"/>
+	      	{recipeNodes}
 	      </div>
 	    );
 	  }
@@ -56,15 +60,16 @@
 	    return (
 	      <div>
 	        Hello, world! I am a RecipeBook.
-	        <RecipeList/>
+	        <RecipeList data={this.props.data}/>
 	        <RecipeForm/>
 	      </div>
 	    );
 	  }
 	});
 
+	window.recipeData=[{title:"Rajma", instructions:"Cook well"},{title:"Rice" ,instructions:"Cook rice"}]
 	React.render(
-	  <RecipeBook/>,
+	  <RecipeBook data={window.recipeData}/>,
 	  document.getElementById('app-container')
 	);
 
