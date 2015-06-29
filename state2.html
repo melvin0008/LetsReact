@@ -10,13 +10,17 @@
         var Recipe = React.createClass({
           getInitialState : function() {
             return {
-              dropDownIsOpen : false
+              dropDownIsOpen : false,
+              colorChange:false
             };
           },
           handleClick :function(){
             this.setState({
               dropDownIsOpen : !this.state.dropDownIsOpen
             })
+          },
+          changeColor:function(val){
+            val==1 ? this.setState({colorChange: true}) : this.setState({colorChange: false})
           },
           renderDropdown: function () {
             return (
@@ -25,11 +29,19 @@
             </div>
             );
           },
+          renderColor: function () {
+            return (
+            <div style={{ color: "red" }}>
+              Click Me
+            </div>
+            );
+          },
           render : function() {
             var dropdown = this.state.dropDownIsOpen ? this.renderDropdown() : null
+            var color = this.state.colorChange ? console.log("changed") : console.log("notchanged")
             return (
-              <div onClick={this.handleClick}>
-                Click me
+              <div onClick={this.handleClick}  onMouseEnter={this.changeColor.bind(this,1)} onMouseLeave={this.changeColor.bind(this,0)}>
+                Click Me
                 {dropdown}
               </div>
             )
