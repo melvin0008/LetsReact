@@ -16,6 +16,10 @@
     _recipes.push(text)
   }
 
+  function clearRecipe(){
+    _recipes=[]
+  }
+
   //Store
   var RecipeStore = Flux.createStore({
       getRecipes: function(){
@@ -26,6 +30,10 @@
           addRecipe(payload.text);
           RecipeStore.emitChange();
       }
+      if(payload.actionType === "CLEAR_RECIPE"){
+        clearRecipe();
+        RecipeStore.emitChange();
+      }
   });
   
   
@@ -35,6 +43,11 @@
          return {
             actionType: "ADD_RECIPE",
             text: text
+         }
+      },
+      clearRecipe: function(text){
+         return {
+            actionType: "CLEAR_RECIPE"
          }
       }
   });
@@ -67,6 +80,9 @@
     addRecipe :function(){
       RecipeActions.addRecipe({_id: Math.floor(Math.random()*1000000)})
     },
+    clearRecipe :function(){
+      RecipeActions.clearRecipe()
+    },
     render: function() {
        var recipeNodes = this.props.recipes.map(function(recipe, index){
                         return <li key={index}>Recipe {index} : {recipe._id}</li>
@@ -78,6 +94,7 @@
                         {recipeNodes}
                     </ul>
                     <button onClick={this.addRecipe}>Add recipe</button>
+                    <button onClick={this.clearRecipe}>Clear recipes</button>
                 </div>
         );
     }
