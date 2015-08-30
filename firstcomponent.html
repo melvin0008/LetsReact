@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>First Component</title>
+</head>
+<body>
+	<div id="root"></div>
+
+	<script src="https://fb.me/react-0.13.3.js"></script>
+	<script src="http://fb.me/JSXTransformer-0.13.3.js"></script>
+	<script type="text/jsx">
+			var Button=React.createClass({
+			render:function () {
+				return (
+					<button>Go</button>
+				)
+			}
+		});
+
+		React.render(<Button/>,document.getElementById('root'));
+
+	</script>
+</body>
+</html>

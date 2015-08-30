@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="lib/react.js"></script>
+  <script src="lib/jsxtransformer.js"></script>
+  <script src="lib/mcfly.js"></script>
+</head>
+<body>
+  <script type="text/jsx">
+
+  var Flux = new McFly();
+
+  _recipes=[]
+
+  function addRecipe(text){
+    _recipes.push(text)
+  }
+
+  function clearRecipe(){
+    _recipes=[]
+  }
+
+  //Store
+  var RecipeStore = Flux.createStore({
+      getRecipes: function(){
+         return _recipes;
+      }
+  }, function(payload){
+      if(payload.actionType === "ADD_RECIPE") {
+          addRecipe(payload.text);
+          RecipeStore.emitChange();
+      }
+      if(payload.actionType === "CLEAR_RECIPE"){
+        clearRecipe();
+        RecipeStore.emitChange();
+      }
+  });
+  
+  
+  //Actions
+  var RecipeActions = Flux.createActions({
+      addRecipe: function(text){
+         return {
+            actionType: "ADD_RECIPE",
+            text: text
+         }
+      },
+      clearRecipe: function(text){
+         return {
+            actionType: "CLEAR_RECIPE"
+         }
+      }
+  });
+
+  function getRecipes(){
+     return {
+         recipes: RecipeStore.getRecipes()
+     }
+  }
+
+  //Controller
+  var RecipeBook = React.createClass({
+      mixins: [RecipeStore.mixin],
+      getInitialState: function(){
+          return getRecipes();
+      },
+      storeDidChange: function() {
+          console.log('changed')
+          this.setState(getRecipes());
+      },
+      render: function() {
+          return <Recipes recipes={this.state.recipes} />;
+      }
+  });
+
+
+  //Recipe Class
+  var Recipes = React.createClass({ 
+
+    addRecipe :function(){
+      RecipeActions.addRecipe({_id: Math.floor(Math.random()*1000000)})
+    },
+    clearRecipe :function(){
+      RecipeActions.clearRecipe()
+    },
+    render: function() {
+       var recipeNodes = this.props.recipes.map(function(recipe, index){
+                        return <li key={index}>Recipe {index} : {recipe._id}</li>
+                      });
+        return (
+
+          <div className="recipes_app">
+                    <ul className="recipes">
+                        {recipeNodes}
+                    </ul>
+                    <button onClick={this.addRecipe}>Add recipe</button>
+                    <button onClick={this.clearRecipe}>Clear recipes</button>
+                </div>
+        );
+    }
+  });
+
+  React.render(<RecipeBook />, document.body);
+
+  </script>
+</body>
+</html>
